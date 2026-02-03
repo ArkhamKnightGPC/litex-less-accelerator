@@ -1,2 +1,7 @@
-# litex-less-accelerator
-Study of HW/SW co-design techniques to speed-up execution of the LESS signature scheme on a RISC-V SoC generated using the LiteX framework.
+# Hardware accelerator for the LESS signature scheme
+
+This repository contains the development of a hardware accelerator for the **Linear Equivalence Signature Scheme (LESS)**, a code-based digital signature algorithm currently under evaluation in the NIST Post-Quantum Cryptography (PQC) standardization process.
+
+The project goal is to use hardware/software co-design techniques to address the computational bottlenecks of the LESS algorithm, specifically targeting the matrix Gaussian elimination process. The matrix row reduction (RREF) function accounts for over **60%** of the execution time in Valgrind profiling.
+
+---
