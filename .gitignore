@@ -27,5 +27,14 @@ pythondata-software-compiler_rt/
 pythondata-software-picolibc/
 valentyusb/
 build/
+# sw_implems
+*.github/
+*Additional_Implementations/
+*KAT/
+*Optimized_Implementation/
+*.out*
+*.nix
+*astylerc
+*Utilities/
 # python venv
 .venv/

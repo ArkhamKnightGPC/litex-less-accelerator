@@ -1,0 +1,45 @@
+# Profiling the CROSS reference implementation
+
+Scripts to profile the CROSS reference implementation using Valgrind/Callgrind.
+
+## Setup
+```bash
+sudo apt install valgrind kcachegrind make gcc
+```
+
+## Commands
+
+Run the automation script to compile and profile our three key functions: **KeyGen**, **Sign**, and **Verify**. The output from this command gives an information instruction count for each function.
+
+```bash
+chmod +x profile_valgrind.sh
+./profile_valgrind.sh
+```
+
+To view the top bottleneck functions for a specific phase, run:
+
+```bash
+callgrind_annotate --auto=yes profile_sign_callgrind.out
+callgrind_annotate --auto=yes profile_verify_callgrind.out
+```
+
+Callgrind also allows opening the results in a GUI to explore the call tree:
+
+```bash
+kcachegrind profile_sign_callgrind.out
+kcachegrind profile_verify_callgrind.out
+```
+
+## Configuration
+
+To change security categories or variants, edit the variables at the top of the `Makefile`:
+
+* `VARIANT`: `-DRSDP` or `-DRSDPG`
+* `CATEGORY`: `-DCATEGORY_1`, `-DCATEGORY_3`, or `-DCATEGORY_5`
+* `OPTIM`: `-DSPEED` or `-DSIG_SIZE`
+
+To remove all generated binaries, object files, and profile data:
+
+```bash
+make clean
+```
