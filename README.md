@@ -10,13 +10,14 @@ The project goal is to use hardware/software co-design techniques to address the
 
 Build base LiteX environment:
 
-´´´
+```
 sudo apt install gcc-riscv64-unknown-elf
 source litex_setup.sh
-´´´
+```
 
 Setup Verilator:
-´´´
+
+```
 sudo apt install libevent-dev libjson-c-dev verilator
 litex_sim --cpu-type=vexriscv
-´´´
+```
