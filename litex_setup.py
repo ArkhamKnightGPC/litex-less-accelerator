@@ -175,25 +175,6 @@ def litex_setup_location_check():
         global current_path
         current_path = os.path.join(current_path, "../")
 
-def litex_setup_auto_update():
-    litex_setup_url = "https://raw.githubusercontent.com/enjoy-digital/litex/master/litex_setup.py"
-    current_sha1 = hashlib.sha1(open(os.path.realpath(__file__)).read().encode("utf-8")).hexdigest()
-    print_status("LiteX Setup auto-update...")
-    try:
-        import requests
-        r = requests.get(litex_setup_url)
-        if r.status_code != 404:
-            upstream_sha1 = hashlib.sha1(r.content).hexdigest()
-            if current_sha1 != upstream_sha1:
-                print_status("LiteX Setup is obsolete, updating.")
-                with open(os.path.realpath(__file__), "wb") as f:
-                    f.write(r.content)
-                os.execl(python3, python3, *sys.argv)
-            else:
-                print_status("LiteX Setup is up to date.")
-    except:
-        pass
-
 # Git helpers --------------------------------------------------------------------------------------
 
 def git_checkout(sha1=None, tag=None):
@@ -513,11 +494,6 @@ def main():
                 setattr(args, arg, True)
             if arg in ["gcc"]:
                 args.gcc = "riscv"
-
-    # Location/Auto-Update.
-    litex_setup_location_check()
-    if not args.dev:
-        litex_setup_auto_update()
 
     # Init.
     if args.init:
