@@ -26,5 +26,6 @@ pythondata-misc-usb_ohci/
 pythondata-software-compiler_rt/
 pythondata-software-picolibc/
 valentyusb/
+build/
 # python venv
 .venv/
