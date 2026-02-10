@@ -8,6 +8,12 @@ The project goal is to use hardware/software co-design techniques to address the
 
 ## Setup
 
+Install RISC-V toolchain:
+```
+chmod +x install_riscv_toolchain.sh
+source install_riscv_toolchain.sh
+```
+
 Build base LiteX environment:
 
 ```

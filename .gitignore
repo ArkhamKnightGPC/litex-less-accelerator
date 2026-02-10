@@ -36,5 +36,7 @@ build/
 *.nix
 *astylerc
 *Utilities/
+# riscv-gnu-toolchain
+riscv-gnu-toolchain
 # python venv
 .venv/
