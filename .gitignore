@@ -12,19 +12,7 @@ litespi/
 litex/
 litex-boards/
 migen/
-pythondata-cpu-lm32/
-pythondata-cpu-minerva/
-pythondata-cpu-mor1kx/
-pythondata-cpu-naxriscv/
-pythondata-cpu-sentinel/
-pythondata-cpu-serv/
-pythondata-cpu-vexiiriscv/
-pythondata-cpu-vexriscv/
-pythondata-cpu-vexriscv-smp/
-pythondata-misc-tapcfg/
-pythondata-misc-usb_ohci/
-pythondata-software-compiler_rt/
-pythondata-software-picolibc/
+pythondata-*/
 valentyusb/
 build/
 # sw_implems
