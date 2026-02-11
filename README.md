@@ -28,24 +28,27 @@ and finally, run a Verilator simulation of the Litex SoC.
 
 ```
 sudo apt install libevent-dev libjson-c-dev verilator
-litex_sim --cpu-type=vexriscv
+litex_sim --cpu-type=vexriscv --integrated-main-ram-size=0x40000 --integrated-sram-size=0x40000
 ```
 
-## Verilator simulation with custom C firmware on Litex
+We explicitly define memory sizes because before compilation of our custom C firmware it's necessary to generate *build/* with memory regions that are big enough for the linker to allocate our code.
 
-First we compile our C code to run as firmware on bare metal
+## Simulating code execution in Verilator
+
+First we compile our C code to a binary **program.bin**
+
 ```
 cd sw_implems_litex/
 make
 ```
 
-now load the **firmware.bin** binary to the Verilator simulation on launch
+now we launch *litex_sim* initializing RAM with our compiled binary. The *--ram-init* option ensures that our custom firmware is available at boot, and the CPU will execute it immediately.
 
 ```
-litex_sim --cpu-type=vexriscv --trace --integrated-rom-init sw_implems_litex/firmware.bin
+litex_sim --cpu-type=vexriscv --integrated-main-ram-size=0x40000 --integrated-sram-size=0x40000 --ram-init=sw_implems_litex/program.bin
 ```
 
-finally, the trace option generated a GTKWave file we can use to visualize waveforms
+finally, it's possible to simulate with the *--trace* option to generate a GTKWave file we can use to visualize waveforms
 
 ```
 cd build/sim/gateware/
@@ -53,6 +56,5 @@ gtkwave sim.gtkw
 ```
 
 ---
-
 
 **OBS**: if you have issues with *gtkwave* on VSCode, check [this](https://askubuntu.com/questions/1462295/ubuntu-22-04-both-eye-of-gnome-and-gimp-failing-with-undefined-symbol-error/1462494#1462494).
