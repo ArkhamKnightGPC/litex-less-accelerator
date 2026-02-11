@@ -6,24 +6,53 @@ The project goal is to use hardware/software co-design techniques to address the
 
 ---
 
-## Setup
+## Environment setup
 
-Install RISC-V toolchain:
+First, install RISC-V toolchain
+
 ```
 chmod +x install_riscv_toolchain.sh
 source install_riscv_toolchain.sh
 ```
 
-Build base LiteX environment:
+then we create a python venv and build our base LiteX environment
 
 ```
+python -m venv venv
+source venv/bin/activate
 sudo apt install gcc-riscv64-unknown-elf
 source litex_setup.sh
 ```
 
-Setup Verilator:
+and finally, run a Verilator simulation of the Litex SoC.
 
 ```
 sudo apt install libevent-dev libjson-c-dev verilator
 litex_sim --cpu-type=vexriscv
 ```
+
+## Verilator simulation with custom C firmware on Litex
+
+First we compile our C code to run as firmware on bare metal
+```
+cd sw_implems_litex/
+make
+```
+
+now load the **firmware.bin** binary to the Verilator simulation on launch
+
+```
+litex_sim --cpu-type=vexriscv --trace --integrated-rom-init sw_implems_litex/firmware.bin
+```
+
+finally, the trace option generated a GTKWave file we can use to visualize waveforms
+
+```
+cd build/sim/gateware/
+gtkwave sim.gtkw
+```
+
+---
+
+
+**OBS**: if you have issues with *gtkwave* on VSCode, check [this](https://askubuntu.com/questions/1462295/ubuntu-22-04-both-eye-of-gnome-and-gimp-failing-with-undefined-symbol-error/1462494#1462494).

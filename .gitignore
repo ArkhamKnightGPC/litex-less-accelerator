@@ -26,5 +26,10 @@ build/
 *Utilities/
 # riscv-gnu-toolchain
 riscv-gnu-toolchain
+# sw_implems_litex
+*.bin
+*.elf
+*.o
+*.d
 # python venv
 .venv/
