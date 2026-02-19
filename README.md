@@ -24,7 +24,7 @@ sudo apt install gcc-riscv64-unknown-elf
 source litex_setup.sh
 ```
 
-and finally, run a Verilator simulation of the Litex SoC.
+and finally, we can run Verilator simulations of Litex SoCs.
 
 ```
 sudo apt install libevent-dev libjson-c-dev verilator
@@ -38,7 +38,7 @@ We explicitly define memory sizes because before compilation of our custom C fir
 First we compile our C code to a binary **program.bin**
 
 ```
-cd sw__litexsim/
+cd sw_litexsim/
 make
 ```
 
