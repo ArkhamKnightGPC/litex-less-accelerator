@@ -1,6 +1,6 @@
 # Hardware accelerator for the LESS signature scheme
 
-This repository contains the development of a hardware accelerator for the **Linear Equivalence Signature Scheme (LESS)**, a code-based digital signature algorithm currently under evaluation in the NIST Post-Quantum Cryptography (PQC) standardization process.
+This repository contains the development of a loosely-coupled hardware accelerator for **LESS - Linear Equivalence Signature Scheme**, a code-based digital signature algorithm currently under evaluation in the NIST Post-Quantum Cryptography (PQC) standardization process.
 
 The project goal is to use hardware/software co-design techniques to address the computational bottlenecks of the LESS algorithm, specifically targeting the matrix Gaussian elimination process. The matrix row reduction (RREF) function accounts for over **60%** of the execution time in Valgrind profiling.
 
@@ -8,7 +8,7 @@ The project goal is to use hardware/software co-design techniques to address the
 
 ## Environment setup
 
-First, install RISC-V toolchain
+First, we install the RISC-V toolchain
 
 ```
 chmod +x install_riscv_toolchain.sh
@@ -18,7 +18,7 @@ source install_riscv_toolchain.sh
 then we create a python venv and build our base LiteX environment
 
 ```
-python -m venv venv
+python3 -m venv venv
 source venv/bin/activate
 sudo apt install gcc-riscv64-unknown-elf
 source litex_setup.sh
@@ -33,28 +33,34 @@ litex_sim --cpu-type=vexriscv --integrated-main-ram-size=0x40000 --integrated-sr
 
 We explicitly define memory sizes because before compilation of our custom C firmware it's necessary to generate *build/* with memory regions that are big enough for the linker to allocate our code.
 
-## Simulating code execution in Verilator
+## Experimentation with litex_sim
 
 First we compile our C code to a binary **program.bin**
 
 ```
-cd sw_implems_litex/
+cd sw__litexsim/
 make
 ```
 
 now we launch *litex_sim* initializing RAM with our compiled binary. The *--ram-init* option ensures that our custom firmware is available at boot, and the CPU will execute it immediately.
 
 ```
-litex_sim --cpu-type=vexriscv --integrated-main-ram-size=0x40000 --integrated-sram-size=0x40000 --ram-init=sw_implems_litex/program.bin
+litex_sim --cpu-type=vexriscv --integrated-main-ram-size=0x40000 --integrated-sram-size=0x40000 --ram-init=sw_litexsim/program.bin
 ```
 
-finally, it's possible to simulate with the *--trace* option to generate a GTKWave file we can use to visualize waveforms
+**OBS:** with the *--trace* option, simulation generates a GTKWave file for visualization:
 
 ```
 cd build/sim/gateware/
 gtkwave sim.gtkw
 ```
 
+If you have issues with *gtkwave* on VSCode, check [this](https://askubuntu.com/questions/1462295/ubuntu-22-04-both-eye-of-gnome-and-gimp-failing-with-undefined-symbol-error/1462494#1462494).
+
 ---
 
-**OBS**: if you have issues with *gtkwave* on VSCode, check [this](https://askubuntu.com/questions/1462295/ubuntu-22-04-both-eye-of-gnome-and-gimp-failing-with-undefined-symbol-error/1462494#1462494).
+## Custom python SoC
+
+In order to integrate our accelerator, we need to explicitly define a custom SoC using Migen and the Litex package:
+- the code for the custom SoC HW is in the **hw_customSoC** folder;
+- and the modified SW implementation is in the **sw_customSoC** folder.
