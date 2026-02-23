@@ -1,8 +1,19 @@
 # Hardware accelerator for the LESS signature scheme
 
-This repository contains the development of a loosely-coupled hardware accelerator for **LESS - Linear Equivalence Signature Scheme**, a code-based digital signature algorithm currently under evaluation in the NIST Post-Quantum Cryptography (PQC) standardization process.
+This repository contains the development of a loosely-coupled hardware accelerator for **LESS - Linear Equivalence Signature Scheme**, a code-based digital signature scheme currently under evaluation in the NIST Post-Quantum Cryptography (PQC) standardization process.
 
-The project goal is to use hardware/software co-design techniques to address the computational bottlenecks of the LESS algorithm, specifically targeting the matrix Gaussian elimination process. The matrix row reduction (RREF) function accounts for over **60%** of the execution time in Valgrind profiling.
+The project goal is to use hardware/software co-design techniques to speed-up the main computational bottlenecks of the LESS algorithm: the matrix Gaussian elimination process. The matrix row reduction (RREF) function accounts for over **60%** of the execution time during *Sign* and *Verify* in Valgrind profiling.
+
+The table below shows profiling results for a trial run of the LESS *Sign* function with Valgrind.
+
+| function | self-time | total-time | number of calls |
+| :--- | :---: | :---: | :---: |
+| `generator_RREF_pivot_reuse` | 61,94% | 61,94% | 45 |
+| `compute_canonical_form_type4` | 7,20% | 19,77% | 196 |
+| `KeccakF1600_StatePermute` | 5,67% | 5,67% | 6040 |
+| `matrix_transpose_opt` | 5,01% | 5,01% | 388 |
+
+
 
 ## Table of contents
 - [Environment setup](#environment-setup)
