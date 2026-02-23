@@ -5,9 +5,9 @@ This repository contains the development of a loosely-coupled hardware accelerat
 The project goal is to use hardware/software co-design techniques to address the computational bottlenecks of the LESS algorithm, specifically targeting the matrix Gaussian elimination process. The matrix row reduction (RREF) function accounts for over **60%** of the execution time in Valgrind profiling.
 
 ## Table of contents
-    - [Environment setup](#environment-setup)
-        - [Experimentation with litex_sim](#experimentation-with-litex_sim)
-    - [Custom python SoC](#custom-python-soc)
+- [Environment setup](#environment-setup)
+    - [Experimentation with litex_sim](#experimentation-with-litex_sim)
+- [Simulation with custom python SoC](#simulation-with-custom-python-soc)
 
 ---
 
@@ -65,7 +65,7 @@ If you have issues with *gtkwave* on VSCode, check [this](https://askubuntu.com/
 
 ---
 
-## Custom python SoC
+## Simulation with custom python SoC
 
 In order to integrate our accelerator, we need to explicitly define a custom SoC using Migen and the Litex package:
 - the code for the custom SoC HW is in the **hw_customSoC** folder;
