@@ -4,6 +4,11 @@ This repository contains the development of a loosely-coupled hardware accelerat
 
 The project goal is to use hardware/software co-design techniques to address the computational bottlenecks of the LESS algorithm, specifically targeting the matrix Gaussian elimination process. The matrix row reduction (RREF) function accounts for over **60%** of the execution time in Valgrind profiling.
 
+## Table of contents
+    - [Environment setup](#environment-setup)
+        - [Experimentation with litex_sim](#experimentation-with-litex_sim)
+    - [Custom python SoC](#custom-python-soc)
+
 ---
 
 ## Environment setup
@@ -33,12 +38,13 @@ litex_sim --cpu-type=vexriscv --integrated-main-ram-size=0x40000 --integrated-sr
 
 We explicitly define memory sizes because before compilation of our custom C firmware it's necessary to generate *build/* with memory regions that are big enough for the linker to allocate our code.
 
-## Experimentation with litex_sim
+### Experimentation with litex_sim
 
 First we compile our C code to a binary **program.bin**
 
 ```
 cd sw_litexsim/
+make clean
 make
 ```
 
@@ -64,3 +70,24 @@ If you have issues with *gtkwave* on VSCode, check [this](https://askubuntu.com/
 In order to integrate our accelerator, we need to explicitly define a custom SoC using Migen and the Litex package:
 - the code for the custom SoC HW is in the **hw_customSoC** folder;
 - and the modified SW implementation is in the **sw_customSoC** folder.
+
+Please refer to these folders for my detailed design information. Now, we first need to generate the **hw_customSoC/build** folder. To do this, run:
+```
+cd hw_customSoC/
+python3 main.py --build_only --sim
+```
+
+The *build_only* option will skip the section of the code where we load our custom firmware (which is not compiled at the time of the first run) and does not run simulation. So, to compile **sw_customSoC** run:
+
+```
+cd sw_customSoC/
+make clean
+make
+```
+
+and now we can simulate on our custom SoC:
+
+```
+cd hw_customSoC/
+python3 customCore.py --sim
+```
