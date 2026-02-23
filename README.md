@@ -8,6 +8,7 @@ The project goal is to use hardware/software co-design techniques to address the
 - [Environment setup](#environment-setup)
     - [Experimentation with litex_sim](#experimentation-with-litex_sim)
 - [Simulation with custom python SoC](#simulation-with-custom-python-soc)
+    - [Debugging with gdb](#debugging-with-gdb)
 
 ---
 
@@ -74,10 +75,12 @@ In order to integrate our accelerator, we need to explicitly define a custom SoC
 Please refer to these folders for more details. First, we first need to generate the **hw_customSoC/build** folder. To do this, run:
 ```
 cd hw_customSoC/
-python3 main.py --build_only --sim
+python3 main.py --first_build --sim
 ```
 
-The *build_only* option will skip the section of the code where we load our custom firmware (which is not compiled at the time of the first run) and does not run simulation. So, to compile **sw_customSoC** run:
+The *first_build* option will skip the section of the code where we load our custom firmware (which is not compiled at the time of the first run). The *sim* option selects the simulation platform instead of a board specific platform, meant for specific target FPGA (to come...).
+
+So, to compile **sw_customSoC** run:
 
 ```
 cd sw_customSoC/
@@ -90,4 +93,19 @@ and now we can simulate on our custom SoC:
 ```
 cd hw_customSoC/
 python3 main.py --sim
+```
+
+### Debugging with gdb
+
+After the proper build, you can launch the simulation directly:
+```
+cd build/sim/gateware
+./obj_dir/Vsim
+```
+
+and you can also debug this simulation executable with gdb:
+```
+gdb ./obj_dir/Vsim
+run
+bt
 ```

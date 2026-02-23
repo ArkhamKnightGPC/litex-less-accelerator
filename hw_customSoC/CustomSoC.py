@@ -19,7 +19,8 @@ class CustomSoC(SoCCore):
     ):
         # Define some base attributes that are useful
         self.bus_data_width = 32
-        self.is_simulated = isinstance(platform, SimPlatform)
+        self.platform = platform
+        self.is_simulated = isinstance(self.platform, SimPlatform)
         self.sys_clk_freq = sys_clk_freq
         self.comm_protocol = comm_protocol
         self.setup_buffer_allocator()
@@ -33,12 +34,14 @@ class CustomSoC(SoCCore):
             else []
         )
 
+        print("ROM words:", len(integrated_rom_data))
+
         SoCCore.__init__(
             self,
             platform=platform,
             # CPU
             cpu_type="vexriscv",
-            cpu_variant="standard",
+            cpu_variant="minimal",
             bus_data_width=self.bus_data_width,
             clk_freq=sys_clk_freq,
             # Memory
@@ -49,6 +52,8 @@ class CustomSoC(SoCCore):
             # UART
             with_uart=False,
         )
+
+        print("ROM base:", hex(self.mem_map["rom"]))
 
         self.add_io()
 
@@ -67,9 +72,13 @@ class CustomSoC(SoCCore):
 
     def add_io(self):
         # If we are simulating, we can have a UART for interacting with the terminal
-        # NOTE: this one needs to be named uart so we can use Litex stdio
-        self.add_uart(
-            name="uart",
-            uart_name="sim",
-            uart_pads=self.platform.request("serial_term"),
-        )
+        if self.is_simulated:
+            if self.comm_protocol == CommProtocol.UART:
+                # NOTE: needs to be named uart so we can use Litex stdio
+                self.add_uart(
+                    name="uart",
+                    uart_name="sim",
+                    uart_pads=self.platform.request("serial"),
+                )
+        else:
+            raise RuntimeError()

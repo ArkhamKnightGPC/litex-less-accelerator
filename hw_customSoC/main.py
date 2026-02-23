@@ -10,14 +10,14 @@ from CustomSoC import CustomSoC
 
 def main():
     parser = argparse.ArgumentParser(description="Build or simulate Custom SoC")
-    parser.add_argument("--build_only", action="store_true", help="Perform only build, not simulation")
+    parser.add_argument("--first_build", action="store_true", help="Perform only build, not simulation")
     parser.add_argument("--sim", action="store_true", help="Define platform as sim or FPGA")
     args = parser.parse_args()
 
     # hardcoded args (TODO: pass all args via argparse)
     sys_clk_freq = int(1e6)
     comm = CommProtocol.UART
-    integrated_rom_path = None if args.build_only else "../sw_customSoC/program.bin"
+    integrated_rom_path = None if args.first_build else "../sw_customSoC/program.bin"
 
     # TODO: add platform option for the target FPGA
     platform = CustomPlatform() if args.sim else None
@@ -39,15 +39,15 @@ def main():
             clk="sys_clk",
             freq_hz=sys_clk_freq
         )
-        sim_config.add_module("serial2console", "serial_term")
+        sim_config.add_module("serial2console", "serial")
 
         builder.build(
             sim_config=sim_config,
-            run=not args.build_only,
+            run=not args.first_build,
             # Verilator optimizations
             threads=8,
             jobs=8,
-            opt_level="O3",
+            opt_level="O0",
             interactive=True,
             coverage=False,
             video=False,
