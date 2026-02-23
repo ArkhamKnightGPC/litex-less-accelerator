@@ -89,5 +89,5 @@ and now we can simulate on our custom SoC:
 
 ```
 cd hw_customSoC/
-python3 customCore.py --sim
+python3 main.py --sim
 ```
