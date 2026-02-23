@@ -71,7 +71,7 @@ In order to integrate our accelerator, we need to explicitly define a custom SoC
 - the code for the custom SoC HW is in the **hw_customSoC** folder;
 - and the modified SW implementation is in the **sw_customSoC** folder.
 
-Please refer to these folders for my detailed design information. Now, we first need to generate the **hw_customSoC/build** folder. To do this, run:
+Please refer to these folders for more details. First, we first need to generate the **hw_customSoC/build** folder. To do this, run:
 ```
 cd hw_customSoC/
 python3 main.py --build_only --sim
