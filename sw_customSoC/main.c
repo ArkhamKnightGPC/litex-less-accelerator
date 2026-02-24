@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdbool.h>
 #include <generated/csr.h>
 #include <generated/soc.h>
 #include <uart.h>
@@ -25,6 +26,25 @@ static void sample_full_matrix(generator_mat_t *G,
     }
 }
 
+//LiteX CSR access function for timer0
+static void setup_timer(void) {
+    // Stop timer
+    timer0_en_write(0);
+
+    // Configure one-shot maximum duration
+    timer0_load_write(0xFFFFFFFF);
+    timer0_reload_write(0);  // no periodic reload
+
+    // Start timer
+    timer0_en_write(1);
+}
+
+static uint32_t timer_get_value(void) {
+    timer0_update_value_write(1);  // latch current value
+    return timer0_value_read();
+}
+
+//Auxiliary print functions
 static void print(const char *s) {
     while (*s)
         uart_rxtx_write(*s++);
@@ -84,15 +104,37 @@ int main(void) {
     print("Matrix BEFORE RREF:\n");
     print_matrix(&G);
 
-    int result = generator_RREF_pivot_reuse(
-        &G,
-        is_pivot_column,
-        was_pivot_column,
-        limit
-    );
+    bool run_soft = true;
+    int result=0;
+
+    uint32_t start_time, end_time;
+
+    if(run_soft){
+        // software baseline: reference implementation of RREF (with pivot reuse)
+        setup_timer();
+        start_time = timer_get_value();
+
+        result = generator_RREF_pivot_reuse(
+            &G,
+            is_pivot_column,
+            was_pivot_column,
+            limit
+        );
+
+        end_time = timer_get_value();
+        timer0_en_write(0);  // stop timer
+
+    }else{
+        // hardware implementation: loosely-coupled accelerator
+    }
 
     print("Matrix AFTER RREF:\n");
     print_matrix(&G);
+
+    uint32_t elapsed_cycles = start_time - end_time; // timer is decreasing
+    print("Latency (in clock cycles): ");
+    print_uint32(elapsed_cycles);
+    print("\n");
 
     if (result)
         print("RREF SUCCESS\n");

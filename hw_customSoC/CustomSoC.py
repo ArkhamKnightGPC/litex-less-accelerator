@@ -1,6 +1,7 @@
 from migen import *
 
 from litex.soc.cores.uart import UARTWishboneBridge
+from litex.soc.cores.timer import Timer
 from litex.soc.integration.soc_core import SoCCore
 from litex.soc.integration.common import get_mem_data
 from litex.soc.interconnect import wishbone
@@ -56,6 +57,10 @@ class CustomSoC(SoCCore):
         print("ROM base:", hex(self.mem_map["rom"]))
 
         self.add_io()
+        timer0 = Timer(width=32)
+        timer0.add_uptime()
+        self.submodules += timer0
+        self.add_csr("timer0")
 
         # Clock domain
         self.clock_domains.cd_sys = ClockDomain()

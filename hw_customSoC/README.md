@@ -1,5 +1,13 @@
 # Custom SoC for the LESS hardware accelerator
 
+## Table of contents
+- [Structure of the base SoC](#structure-of-the-base-soc)
+- [Integrating loosely-coupled RREF accelerator](#integrating-loosely-coupled-rref-accelerator)
+
+---
+
+## Structure of the base SoC
+
 The design of this SoC follows the [standard LiteX design flow](https://github.com/enjoy-digital/litex/wiki/LiteX-for-Hardware-Engineers).
 
 There are 3 keys scripts in the build procedure:
@@ -9,3 +17,5 @@ There are 3 keys scripts in the build procedure:
 2. **customPlatform.py** extends the *Platform* class to describe the build environment for our custom SoC.
 
 3. the main function in **main.py** passes our custom Platform object to a Builder object to generate the **hw_customSoC/build** folder.
+
+## Integrating loosely-coupled RREF accelerator
