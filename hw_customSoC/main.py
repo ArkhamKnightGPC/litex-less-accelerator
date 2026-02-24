@@ -47,7 +47,7 @@ def main():
             # Verilator optimizations
             threads=8,
             jobs=8,
-            opt_level="O0",
+            opt_level="O3",
             interactive=True,
             coverage=False,
             video=False,

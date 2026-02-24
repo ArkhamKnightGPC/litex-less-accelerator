@@ -4,6 +4,10 @@ SOC_DIRECTORY = ../litex/litex/soc
 include $(BUILD_DIR)/software/include/generated/variables.mak
 include $(SOC_DIRECTORY)/software/common.mak
 
+# --- LESS PARAMETERS ---
+# We do not define CATEGORY yet to use toy parameters during early development/tests
+# -----------------------
+
 CFLAGS += -g -O3 -I./include
 CODE_SRC := $(wildcard lib/*.c)
 CODE_OBJ := $(CODE_SRC:.c=.o)
