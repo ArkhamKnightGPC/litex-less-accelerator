@@ -89,7 +89,7 @@ cd hw_customSoC/
 python3 main.py --first_build --sim
 ```
 
-The *first_build* option will skip the section of the code where we load our custom firmware (which is not compiled at the time of the first run). The *sim* option selects the simulation platform instead of a board specific platform, meant for specific target FPGA (to come...).
+The *first_build* option will skip the section of the code where we load our custom firmware (which is not compiled at the time of the first build). The *sim* option selects the simulation platform instead of a board specific platform, meant for some specific target FPGA (to come...).
 
 So, to compile **sw_customSoC** run:
 
@@ -99,7 +99,7 @@ make clean
 make
 ```
 
-and now we can simulate on our custom SoC:
+and now we can re-build and simulate on our custom SoC:
 
 ```
 cd hw_customSoC/
